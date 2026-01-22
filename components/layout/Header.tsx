@@ -10,11 +10,14 @@ import { useSettingsStore, type Currency } from "@/store/useSettingsStore";
 import MegaMenu from "./MegaMenu";
 
 const navLinks = [
-  { name: "Shop", href: "/shop" },
-  { name: "Collections", href: "/collections" },
-  { name: "Cerimonial", href: "/shop?category=ceremonial" },
-  { name: "Bespoke", href: "/contact" },
-  // { name: "Explore", href: "/about" },
+  { name: "HOME", href: "/" },
+  { name: "ABOUT US", href: "/about" },
+  { name: "KESHER", href: "/shop?category=kesher" },
+  { name: "MY PEACH", href: "/shop?category=my-peach" },
+  { name: "THE BASICS", href: "/shop?category=the-basics" },
+  { name: "COLLECTIONS", href: "/collections" },
+  { name: "KEEP IT CLEAN", href: "/shop?category=keep-it-clean" },
+  { name: "CONTACT", href: "/contact" },
 ];
 
 export default function Header() {
@@ -34,116 +37,112 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || activeMegaMenu ? "bg-white shadow-sm py-4" : "bg-white/90 backdrop-blur-md py-6"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 bg-white ${isScrolled || activeMegaMenu ? "shadow-sm" : ""}`}
         onMouseLeave={() => setActiveMegaMenu(null)}
       >
-        <div className="container mx-auto px-6 grid grid-cols-3 items-center relative z-50">
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex justify-start">
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 hover:bg-gray-100 rounded-full"
-            >
-              <Menu className="w-6 h-6 text-[#1e4538]" />
-            </button>
+        {/* Top Bar */}
+        <div className="border-b border-[#1e4538] bg-white">
+          <div className="container mx-auto px-6 py-2">
+            <p className="text-center text-sm text-gray-700 font-sans">
+              Free Shipping on orders over $140
+            </p>
           </div>
+        </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8 justify-start h-full">
-            {navLinks.map((link) => (
-              <div
-                key={link.name}
-                onMouseEnter={() => {
-                  if (["Shop", "Collections", "Cerimonial", "Bespoke", "Explore"].includes(link.name)) {
-                    setActiveMegaMenu(link.name);
-                  } else {
-                    setActiveMegaMenu(null);
-                  }
-                }}
-                className="h-full flex items-center"
-              >
-                <Link
-                  href={link.href}
-                  className={`text-sm uppercase tracking-widest hover:opacity-70 font-medium font-sans py-2 ${activeMegaMenu === link.name ? "text-[#1e4538] border-b-2 border-[#1e4538]" : "text-[#1e4538]"
-                    }`}
-                >
-                  {link.name}
-                </Link>
-              </div>
-            ))}
-          </nav>
-
-          {/* Logo */}
-          <div className="flex justify-center">
-            <Link href="/" className="relative block h-12 w-48 md:h-24 md:w-80">
-              {/* Desktop Logo */}
-              <Image
-                src="/TheJewellery_Department_Logo_Final.webp"
-                alt="The Jewellery Department"
-                fill
-                className="object-contain hidden md:block"
-                priority
-              />
-              {/* Mobile Logo */}
-              <Image
-                src="/mobile_logo.webp"
-                alt="The Jewellery Department"
-                fill
-                className="object-contain md:hidden"
-                priority
-              />
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-6 justify-end">
-            {/* Settings Dropdowns */}
-            <div className="hidden md:flex items-center gap-4 text-xs font-sans text-[#1e4538]">
-
-              <div className="relative group cursor-pointer">
-                <span className="flex items-center gap-1 uppercase hover:opacity-70">
-                  {useSettingsStore((state) => state.currency)} <ChevronDown className="w-3 h-3" />
-                </span>
-                <div className="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
-                  <div className="bg-white shadow-md border border-gray-100 py-2 w-24">
-                    {(['AUD', 'USD', 'EUR', 'GBP'] as Currency[]).map((curr) => (
-                      <button
-                        key={curr}
-                        onClick={() => useSettingsStore.getState().setCurrency(curr)}
-                        className="block w-full text-left px-4 py-1 hover:bg-gray-50 uppercase"
-                      >
-                        {curr}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+        {/* Main Header Section */}
+        <div className="container mx-auto px-6 py-4">
+          <div className="grid grid-cols-3 items-center gap-4">
+            {/* Left: Search */}
+            <div className="flex justify-start">
+              <div className="relative w-full max-w-xs">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:border-[#1e4538] font-sans text-sm"
+                />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
             </div>
 
-            <button className="hidden sm:block p-1 hover:opacity-70">
-              <span className="sr-only">Search</span>
-              <Search className="w-5 h-5 text-[#1e4538]" />
-            </button>
-            <Link href="/login" className="hidden sm:block p-1 hover:opacity-70">
-              <span className="sr-only">Login</span>
-              <span className="text-sm font-sans uppercase text-[#1e4538] mr-1 hidden md:inline">
-                Login
-              </span>
-            </Link>
-            <button
-              onClick={useCartStore((state) => state.toggleCart)}
-              className="flex items-center gap-1 p-1 hover:opacity-70 relative"
-            >
-              <div className="relative">
-                <ShoppingBag className="w-5 h-5 text-[#1e4538]" />
+            {/* Center: Logo */}
+            <div className="flex justify-center">
+              <Link href="/" className="relative block h-12 w-48 md:h-16 md:w-64">
+                <Image
+                  src="/TheJewellery_Department_Logo_Final.webp"
+                  alt="The Jewellery Department"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </Link>
+            </div>
+
+            {/* Right: Account and Cart */}
+            <div className="flex items-center gap-6 justify-end">
+              <Link href="/login" className="flex items-center gap-1 hover:opacity-70">
+                <User className="w-5 h-5 text-gray-700" />
+                <span className="text-sm font-sans uppercase text-gray-700 hidden md:inline">
+                  ACCOUNT
+                </span>
+              </Link>
+              <button
+                onClick={useCartStore((state) => state.toggleCart)}
+                className="flex items-center gap-1 hover:opacity-70 relative"
+              >
+                <ShoppingBag className="w-5 h-5 text-gray-700" />
+                <span className="text-sm font-sans uppercase text-gray-700 hidden md:inline">
+                  CART
+                </span>
                 {useCartStore((state) => state.items.length > 0) && (
                   <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full border-2 border-white" />
                 )}
-              </div>
-              <span className="text-sm font-sans text-[#1e4538] hidden md:inline">
-                Bag ({useCartStore((state) => state.items.reduce((acc, item) => acc + item.quantity, 0))})
-              </span>
-            </button>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Bar */}
+        <div className="border-t border-gray-200">
+          <div className="container mx-auto px-6">
+            <nav className="hidden lg:flex items-center justify-center gap-8 py-3">
+              {navLinks.map((link) => (
+                <div
+                  key={link.name}
+                  onMouseEnter={() => {
+                    if (link.name === "COLLECTIONS") {
+                      setActiveMegaMenu("Collections");
+                    } else {
+                      setActiveMegaMenu(null);
+                    }
+                  }}
+                  className="h-full flex items-center"
+                >
+                  <Link
+                    href={link.href}
+                    className={`text-sm uppercase tracking-wider hover:opacity-70 font-sans text-gray-700 py-2 flex items-center gap-1 ${
+                      activeMegaMenu === "Collections" && link.name === "COLLECTIONS"
+                        ? "text-[#1e4538] border-b-2 border-[#1e4538]"
+                        : ""
+                    }`}
+                  >
+                    {link.name}
+                    {link.name === "COLLECTIONS" && (
+                      <ChevronDown className="w-3 h-3" />
+                    )}
+                  </Link>
+                </div>
+              ))}
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex justify-center py-3">
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <Menu className="w-6 h-6 text-gray-700" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -177,14 +176,14 @@ export default function Header() {
               className="fixed inset-y-0 left-0 w-[80%] max-w-sm bg-white z-50 lg:hidden shadow-xl p-6"
             >
               <div className="flex justify-between items-center mb-10">
-                <span className="font-serif text-xl font-bold text-[#1e4538]">
+                <span className="font-serif text-xl font-bold text-gray-700">
                   Menu
                 </span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2 hover:bg-gray-100 rounded-full"
                 >
-                  <X className="w-6 h-6 text-[#1e4538]" />
+                  <X className="w-6 h-6 text-gray-700" />
                 </button>
               </div>
               <div className="flex flex-col gap-6">
@@ -193,7 +192,7 @@ export default function Header() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg font-serif text-[#1e4538]"
+                    className="text-lg font-sans text-gray-700 uppercase"
                   >
                     {link.name}
                   </Link>
@@ -202,9 +201,9 @@ export default function Header() {
                   <Link
                     href="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-2 text-[#1e4538]"
+                    className="flex items-center gap-2 text-gray-700 uppercase font-sans"
                   >
-                    <User className="w-5 h-5" /> Login
+                    <User className="w-5 h-5" /> ACCOUNT
                   </Link>
                 </div>
               </div>
@@ -214,7 +213,7 @@ export default function Header() {
       </AnimatePresence>
 
       {/* Spacer for fixed header */}
-      <div className="h-24 lg:h-32" />
+      <div className="h-32 lg:h-40" />
     </>
   );
 }

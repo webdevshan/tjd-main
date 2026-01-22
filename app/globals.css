@@ -10,8 +10,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
-  --font-sans: var(--font-montserrat);
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-kohinoor);
+  --font-serif: var(--font-lamoric-rowen);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,5 +24,9 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-kohinoor), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-lamoric-rowen), serif;
 }
